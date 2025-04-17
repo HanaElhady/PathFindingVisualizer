@@ -1,8 +1,1 @@
 # PathFindingVisualizer
-
-# hahaha
-
-```
-cout=>"hiii"
-```
-
