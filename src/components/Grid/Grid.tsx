@@ -6,12 +6,11 @@ import { NodeType } from '../../types';
 interface GridProps {
   startPosition: string | null;
   endPosition: string | null;
-  draggedItem: { id: string; overId: string } | null;
   visitedNodes: string[];
   pathNodes: string[];
   isPlaying: boolean;
   onClearGrid: () => void;
-  onUpdateStart: (newStartId: string) => void; 
+  onUpdateStart: (newStartId: string) => void;
   onUpdateEnd: (newEndId: string) => void;
 }
 
@@ -28,7 +27,6 @@ const Grid: React.FC<GridProps> = ({
   const { wallPositions, toggleWall } = useWallContext();
   const [visualState, setVisualState] = useState<Record<string, Partial<NodeType>>>({});
 
-  
   const ROWS = 15;
   const COLUMNS = 20;
 
@@ -42,8 +40,9 @@ const Grid: React.FC<GridProps> = ({
         return;
       }
 
+      
       for (let i = 0; i < visited.length; i++) {
-        if (isCancelled) { onClearGrid(); return; }
+        if (isCancelled) return;
         await new Promise(res => setTimeout(res, 30));
         setVisualState(prev => ({
           ...prev,
@@ -51,8 +50,9 @@ const Grid: React.FC<GridProps> = ({
         }));
       }
 
+      
       for (let i = 0; i < path.length; i++) {
-        if (isCancelled) { onClearGrid(); return; }
+        if (isCancelled) return;
         await new Promise(res => setTimeout(res, 50));
         setVisualState(prev => ({
           ...prev,
@@ -63,9 +63,7 @@ const Grid: React.FC<GridProps> = ({
 
     if (visitedNodes.length === 0 && pathNodes.length === 0) {
       setVisualState({});
-    }
-
-    if (visitedNodes.length > 0 || pathNodes.length > 0) {
+    } else {
       animateAlgorithm(visitedNodes, pathNodes);
     }
 
@@ -81,7 +79,6 @@ const Grid: React.FC<GridProps> = ({
 
   const handleDropNode = (draggedId: string, targetId: string) => {
     if (draggedId === targetId) return;
-
     if (targetId === startPosition || targetId === endPosition) return;
 
     if (draggedId === startPosition) {
@@ -96,7 +93,7 @@ const Grid: React.FC<GridProps> = ({
     for (let j = 0; j < COLUMNS; j++) {
       const id = `node-${i}-${j}`;
       const visual = visualState[id] || {};
-      const node = {
+      const node: NodeType = {
         row: i,
         col: j,
         isStart: startPosition === id,
@@ -116,16 +113,14 @@ const Grid: React.FC<GridProps> = ({
           node={node}
           onWallToggle={() => handleWallToggle(id)}
           isPlaying={isPlaying}
-          onDropNode={handleDropNode} 
+          onDropNode={handleDropNode}
         />
       );
     }
   }
 
   return (
-    <div
-      className="flex flex-col min-h-screen px-2 pt-8 select-none"
-    >
+    <div className="flex flex-col min-h-screen px-2 pt-8 select-none">
       <div
         className="grid w-full max-w-screen-2xl"
         style={{
@@ -141,3 +136,4 @@ const Grid: React.FC<GridProps> = ({
 };
 
 export default Grid;
+

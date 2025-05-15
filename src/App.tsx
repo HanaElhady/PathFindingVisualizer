@@ -22,7 +22,7 @@ function App() {
     if (state) {
       handleRunAlgorithm();
     } else {
-      handleClearGrid(false); // soft clear (retain start/end/walls)
+      handleClearGrid(false);
     }
   };
 
@@ -42,7 +42,7 @@ function App() {
     const dropId = over.id as string;
     if (wallPositions.includes(dropId)) return;
 
-    // منع وضع start على end أو العكس
+  
     if (active.id === 'bot' && dropId === endPosition) return;
     if (active.id === 'point' && dropId === startPosition) return;
 
@@ -83,13 +83,12 @@ function App() {
           <Grid
             startPosition={startPosition}
             endPosition={endPosition}
-            draggedItem={draggedItem}
             visitedNodes={visitedNodes}
             pathNodes={pathNodes}
             isPlaying={isPlaying}
             onClearGrid={handleClearGrid}
-            onUpdateStart={setStartPosition}  // تمرير تحديث start
-            onUpdateEnd={setEndPosition}      // تمرير تحديث end
+            onUpdateStart={setStartPosition}  
+            onUpdateEnd={setEndPosition}     
           />
         </DndContext>
       </div>
