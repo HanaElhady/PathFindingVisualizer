@@ -1,4 +1,9 @@
+import { useState } from "react";
+
 // src/types/index.ts
+type AlgorithmType = 'Dijkstra' | 'Astar';
+export const [algorithm, setAlgorithm] = useState<AlgorithmType>('Dijkstra');
+
 export interface NodeType {
     row: number;
     col: number;

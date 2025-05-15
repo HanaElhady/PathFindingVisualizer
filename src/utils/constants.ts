@@ -1,4 +1,3 @@
-import { AlgorithmSelectType} from "./types";
 export const MAX_ROWS = 29;
 export const MAX_COLS = 39;
 export const SPEED = 0.5;
@@ -39,9 +38,5 @@ export const WALL_TILE_STYLE = TILE_STYLE + " bg-gray-200";
 export const PATH_TILE_STYLE = TILE_STYLE + "👣";//path
 
 
-export const PATHFINDING_ALGORITHMS: AlgorithmSelectType[] = [
-  { name: "Dijkstra", value: "DIJKSTRA" },
-  { name: "A-Star", value: "A_STAR" },
-];
 export const SLEEP_TIME = 5;
 export const EXTENDED_SLEEP_TIME = 30;

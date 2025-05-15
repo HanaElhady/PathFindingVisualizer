@@ -1,28 +1,27 @@
 // src/components/Controls/ControlPanel.tsx
-import React, { useState } from "react";
+import React from "react";
 import { Draggable } from "../../utils/draggable";
+import { AlgorithmType } from "../../utils/types";
 
 interface ControlPanelProps {
   onPlay: () => void;
   onTogglePlay: (isPlaying: boolean) => void;
   startPosition: string | null;
   endPosition: string | null;
+  algorithm: AlgorithmType;
+  setAlgorithm: (algo: AlgorithmType) => void;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
-  onPlay,
   onTogglePlay,
   startPosition,
-  endPosition
+  endPosition ,
+  algorithm,
+  setAlgorithm,
 }) => {
 
   const [play, setPlay] = React.useState(false);
-  const [algorithm, setAlgorithmState] = useState("Dijkstra");
-
-  const setAlgorithm = (algo: string) => {
-    setAlgorithmState(algo); 
-  };
-
+  
   return (
     <div className="flex pl-2.5 gap-4 mb-4 justify-batween items-center w-full">
       <div className="w-1/2 space-x-8 flex-row flex items-center h-fit">
@@ -38,8 +37,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
 
   {!play && (
     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-      <li><a onClick={() => setAlgorithm("Dijkstra")}>Dijkstra</a></li>
-      <li><a onClick={() => setAlgorithm("Astar")}>Astar</a></li>
+      <li><a onClick={() => setAlgorithm("DIJKSTRA")}>Dijkstra</a></li>
+      <li><a onClick={() => setAlgorithm("A_STAR")}>Astar</a></li>
     </ul>
   )}
 </div>

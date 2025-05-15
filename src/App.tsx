@@ -5,6 +5,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { useWallContext } from './context/WallContext';
 import { dijkstra } from './algorithms/dijkstra';
 import { aStar } from './algorithms/astar';
+import { AlgorithmType } from './utils/types';
 
 function App() {
   const [draggedItem, setDraggedItem] = useState<{ id: string; overId: string } | null>(null);
@@ -13,7 +14,7 @@ function App() {
   const [visitedNodes, setVisitedNodes] = useState<string[]>([]);
   const [pathNodes, setPathNodes] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [algorithm, setAlgorithm] = useState<'Dijkstra' | 'Astar'>('Dijkstra');
+  const [algorithm, setAlgorithm] = useState<AlgorithmType>('DIJKSTRA');
   const { wallPositions, clearWalls } = useWallContext();
 
   const handleTogglePlay = (state: boolean) => {
@@ -21,17 +22,19 @@ function App() {
     if (state) {
       handleRunAlgorithm();
     } else {
-      handleClearGrid();
+      handleClearGrid(false); // soft clear (retain start/end/walls)
     }
   };
 
-   const handleClearGrid = () => {
+  const handleClearGrid = (fullClear: boolean = true) => {
     setVisitedNodes([]);
     setPathNodes([]);
-    setStartPosition(null);
-    setEndPosition(null);
-    setDraggedItem(null);
-    if (clearWalls) clearWalls();
+    if (fullClear) {
+      setStartPosition(null);
+      setEndPosition(null);
+      setDraggedItem(null);
+      if (clearWalls) clearWalls();
+    }
   };
 
   const handleDragEnd = ({ over, active }: DragEndEvent) => {
@@ -39,9 +42,9 @@ function App() {
     const dropId = over.id as string;
     if (wallPositions.includes(dropId)) return;
 
-    if (active.id === 'bot' && dropId !== startPosition) {
+    if (active.id === 'bot') {
       setStartPosition(dropId);
-    } else if (active.id === 'point' && dropId !== endPosition) {
+    } else if (active.id === 'point') {
       setEndPosition(dropId);
     }
 
@@ -52,7 +55,7 @@ function App() {
     if (!startPosition || !endPosition) return;
 
     const result =
-      algorithm === 'Dijkstra'
+      algorithm === 'DIJKSTRA'
         ? dijkstra(startPosition, endPosition, wallPositions, 15, 20)
         : aStar(startPosition, endPosition, wallPositions, 15, 20);
 
@@ -69,6 +72,8 @@ function App() {
             onTogglePlay={handleTogglePlay}
             startPosition={startPosition}
             endPosition={endPosition}
+            algorithm={algorithm}
+            setAlgorithm={setAlgorithm}
           />
           <Grid
             startPosition={startPosition}
@@ -78,7 +83,6 @@ function App() {
             pathNodes={pathNodes}
             isPlaying={isPlaying}
             onClearGrid={handleClearGrid} 
-
           />
         </DndContext>
       </div>
