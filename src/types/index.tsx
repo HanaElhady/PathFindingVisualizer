@@ -1,9 +1,3 @@
-import { useState } from "react";
-
-// src/types/index.ts
-type AlgorithmType = 'Dijkstra' | 'Astar';
-export const [algorithm, setAlgorithm] = useState<AlgorithmType>('Dijkstra');
-
 export interface NodeType {
     row: number;
     col: number;
@@ -19,5 +13,19 @@ export interface NodeType {
     isPath?: boolean;
     isCurrent?: boolean;
   }
+
+  export type AlgorithmType = "DIJKSTRA" | "A_STAR" ;
+  export interface AlgorithmSelectType {
+    name: string;
+    value: AlgorithmType;
+  }
+  
+  
+  export type SpeedType = 2 | 1 | 0.5;
+  export interface SpeedSelectType {
+    name: string;
+    value: SpeedType;
+  }
+  
   
   

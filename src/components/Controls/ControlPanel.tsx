@@ -1,7 +1,7 @@
 // src/components/Controls/ControlPanel.tsx
 import React from "react";
 import { Draggable } from "../../utils/draggable";
-import { AlgorithmType } from "../../utils/types";
+import { AlgorithmType } from "../../types";
 
 interface ControlPanelProps {
   onPlay: () => void;

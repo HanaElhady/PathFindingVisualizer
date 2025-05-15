@@ -5,7 +5,8 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { useWallContext } from './context/WallContext';
 import { dijkstra } from './algorithms/dijkstra';
 import { aStar } from './algorithms/astar';
-import { AlgorithmType } from './utils/types';
+import { AlgorithmType } from './types';
+
 
 function App() {
   const [draggedItem, setDraggedItem] = useState<{ id: string; overId: string } | null>(null);
