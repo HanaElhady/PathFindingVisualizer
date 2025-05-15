@@ -40,9 +40,8 @@ const Grid: React.FC<GridProps> = ({
         return;
       }
 
-      
       for (let i = 0; i < visited.length; i++) {
-        if (isCancelled) return;
+        if (isCancelled) { onClearGrid(); return; }
         await new Promise(res => setTimeout(res, 30));
         setVisualState(prev => ({
           ...prev,
@@ -50,9 +49,17 @@ const Grid: React.FC<GridProps> = ({
         }));
       }
 
-      
+      for (let i = 0; i < visited.length; i++) {
+        if (isCancelled) { onClearGrid(); return; }
+        await new Promise(res => setTimeout(res, 30));
+        setVisualState(prev => ({
+          ...prev,
+          [visited[i]]: { ...(prev[visited[i]] || {}), isVisited: true },
+        }));
+      }
+
       for (let i = 0; i < path.length; i++) {
-        if (isCancelled) return;
+        if (isCancelled) { onClearGrid(); return; }
         await new Promise(res => setTimeout(res, 50));
         setVisualState(prev => ({
           ...prev,
@@ -63,7 +70,9 @@ const Grid: React.FC<GridProps> = ({
 
     if (visitedNodes.length === 0 && pathNodes.length === 0) {
       setVisualState({});
-    } else {
+    }
+
+    if (visitedNodes.length > 0 || pathNodes.length > 0) {
       animateAlgorithm(visitedNodes, pathNodes);
     }
 
@@ -136,4 +145,5 @@ const Grid: React.FC<GridProps> = ({
 };
 
 export default Grid;
+
 
