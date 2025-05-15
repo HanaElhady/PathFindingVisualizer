@@ -7,7 +7,6 @@ import { dijkstra } from './algorithms/dijkstra';
 import { aStar } from './algorithms/astar';
 import { AlgorithmType } from './types';
 
-
 function App() {
   const [draggedItem, setDraggedItem] = useState<{ id: string; overId: string } | null>(null);
   const [startPosition, setStartPosition] = useState<string | null>(null);
@@ -43,6 +42,10 @@ function App() {
     const dropId = over.id as string;
     if (wallPositions.includes(dropId)) return;
 
+    // منع وضع start على end أو العكس
+    if (active.id === 'bot' && dropId === endPosition) return;
+    if (active.id === 'point' && dropId === startPosition) return;
+
     if (active.id === 'bot') {
       setStartPosition(dropId);
     } else if (active.id === 'point') {
@@ -75,6 +78,7 @@ function App() {
             endPosition={endPosition}
             algorithm={algorithm}
             setAlgorithm={setAlgorithm}
+            isPlaying={isPlaying}
           />
           <Grid
             startPosition={startPosition}
@@ -83,7 +87,9 @@ function App() {
             visitedNodes={visitedNodes}
             pathNodes={pathNodes}
             isPlaying={isPlaying}
-            onClearGrid={handleClearGrid} 
+            onClearGrid={handleClearGrid}
+            onUpdateStart={setStartPosition}  // تمرير تحديث start
+            onUpdateEnd={setEndPosition}      // تمرير تحديث end
           />
         </DndContext>
       </div>
