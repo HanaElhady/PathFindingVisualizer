@@ -17,7 +17,6 @@ const Node: React.FC<NodeProps> = ({ node, onWallToggle, onMouseEnter }) => {
       onWallToggle(id); 
     }
   };
-
   return (
     <Droppable id={id}>
       <div
@@ -55,6 +54,7 @@ const Node: React.FC<NodeProps> = ({ node, onWallToggle, onMouseEnter }) => {
         )}
       </div>
     </Droppable>
+    
   );
 };
 

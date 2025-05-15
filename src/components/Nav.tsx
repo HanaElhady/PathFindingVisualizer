@@ -12,7 +12,7 @@ import { AlgorithmType} from "../utils/types";
 import { Select } from "./Select";
 import { PlayButton } from "./PlayButton";
 import { runPathfindingAlgorithm } from "../utils/runPathfindingAlgorithm";
-import { animatePath } from "../utils/animatePath";
+// import { animatePath } from "../utils/animatePath";
 
 export function Nav({
   isVisualizationRunningRef,
@@ -45,7 +45,7 @@ export function Nav({
       endTile,
     });
 
-    animatePath(traversedTiles, path, startTile, endTile, speed);
+    // animatePath(traversedTiles, path, startTile, endTile, speed);
     setIsDisabled(true);
     isVisualizationRunningRef.current = true;
     setTimeout(() => {

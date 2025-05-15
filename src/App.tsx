@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Grid from './components/Grid/Grid';
 import ControlPanel from './components/Controls/ControlPanel';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
-import { WallProvider, useWallContext } from './context/WallContext';
+import { useWallContext } from './context/WallContext';
 import { dijkstra } from './algorithms/dijkstra';
 import { aStar } from './algorithms/astar';
 
@@ -25,7 +25,7 @@ function App() {
     }
   };
 
-  const handleClearGrid = () => {
+   const handleClearGrid = () => {
     setVisitedNodes([]);
     setPathNodes([]);
     setStartPosition(null);
@@ -67,8 +67,8 @@ function App() {
           <ControlPanel
             onPlay={handleRunAlgorithm}
             onTogglePlay={handleTogglePlay}
-            algorithm={algorithm}
-            setAlgorithm={setAlgorithm}
+            startPosition={startPosition}
+            endPosition={endPosition}
           />
           <Grid
             startPosition={startPosition}
@@ -76,6 +76,9 @@ function App() {
             draggedItem={draggedItem}
             visitedNodes={visitedNodes}
             pathNodes={pathNodes}
+            isPlaying={isPlaying}
+            onClearGrid={handleClearGrid} 
+
           />
         </DndContext>
       </div>

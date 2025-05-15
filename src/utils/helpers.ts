@@ -1,4 +1,5 @@
 // src/utils/helpers.ts
+
 export function createEmptyGrid(rows: number, cols: number) {
     const grid = [];
     for (let row = 0; row < rows; row++) {

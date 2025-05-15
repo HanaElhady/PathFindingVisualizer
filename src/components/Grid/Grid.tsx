@@ -9,9 +9,18 @@ interface GridProps {
   draggedItem: { id: string; overId: string } | null;
   visitedNodes: string[];
   pathNodes: string[];
+  isPlaying: boolean;
+  onClearGrid: () => void;
 }
 
-const Grid: React.FC<GridProps> = ({ startPosition, endPosition, visitedNodes, pathNodes }) => {
+const Grid: React.FC<GridProps> = ({
+  startPosition,
+  endPosition,
+  visitedNodes,
+  pathNodes,
+  isPlaying,
+  onClearGrid }) => {
+
   const { wallPositions, toggleWall } = useWallContext();
   const [columns, setColumns] = useState(20);
   const [visualState, setVisualState] = useState<Record<string, Partial<NodeType>>>({});
@@ -19,46 +28,64 @@ const Grid: React.FC<GridProps> = ({ startPosition, endPosition, visitedNodes, p
 
   const MAX_ROW = 15;
 
+  
+
+  useEffect(() => {
+  let isCancelled = false;
+
   const animateAlgorithm = async (visited: string[], path: string[]) => {
+    if (!isPlaying) {
+      isCancelled = true;
+      onClearGrid();
+      return;
+    }
+
     for (let i = 0; i < visited.length; i++) {
+      if (isCancelled) {onClearGrid(); return;}
       await new Promise(res => setTimeout(res, 30));
       setVisualState(prev => ({
         ...prev,
-        [visited[i]]: { ...(prev[visited[i]] || {}), isVisited: true }
+        [visited[i]]: { ...(prev[visited[i]] || {}), isVisited: true },
       }));
     }
 
     for (let i = 0; i < path.length; i++) {
+ if (isCancelled) {onClearGrid(); return;}
       await new Promise(res => setTimeout(res, 50));
       setVisualState(prev => ({
         ...prev,
-        [path[i]]: { ...(prev[path[i]] || {}), isPath: true }
+        [path[i]]: { ...(prev[path[i]] || {}), isPath: true },
       }));
     }
   };
 
-  useEffect(() => {
-    if (visitedNodes.length === 0 && pathNodes.length === 0) {
-      setVisualState({});
-    }
+  if (visitedNodes.length === 0 && pathNodes.length === 0) {
+    setVisualState({});
+  }
 
-    if (visitedNodes.length > 0 || pathNodes.length > 0) {
-      animateAlgorithm(visitedNodes, pathNodes);
-    }
+  if (visitedNodes.length > 0 || pathNodes.length > 0) {
+    animateAlgorithm(visitedNodes, pathNodes);
+  }
 
-    const calculateColumns = () => {
-      const screenWidth = window.innerWidth;
-      const cellSize = 50;
-      const cols = Math.floor(screenWidth / (cellSize + 2));
-      setColumns(cols);
-    };
+  const calculateColumns = () => {
+    const screenWidth = window.innerWidth;
+    const cellSize = 50;
+    const cols = Math.floor(screenWidth / (cellSize + 2));
+    setColumns(cols);
+  };
 
-    calculateColumns();
-    window.addEventListener('resize', calculateColumns);
-    return () => window.removeEventListener('resize', calculateColumns);
-  }, [visitedNodes, pathNodes]);
+  calculateColumns();
+  window.addEventListener('resize', calculateColumns);
+
+  return () => {
+    isCancelled = true; // 🔁 this cancels animation on cleanup
+    window.removeEventListener('resize', calculateColumns);
+  };
+}, [visitedNodes, pathNodes, isPlaying]); // ← also track `isPlaying`
+
 
   const handleWallToggle = (id: string) => {
+    if(isPlaying) return; // Prevent wall toggling during animation
     toggleWall(id);
   };
 
