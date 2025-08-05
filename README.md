@@ -1,4 +1,5 @@
 # PathFindingVisualizer
 
+📄 [تحميل ملف المشروع PDF](./Project Overview (2).pdf)
 
-📄 [عرض ملف المشروع PDF](Project Overview (2).pdf/.)
+
