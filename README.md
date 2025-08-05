@@ -1,4 +1,4 @@
 # PathFindingVisualizer
 
 
-📄 [عرض ملف المشروع PDF](https://github.com/HanaElhady/PathFindingVisualizer/blob/main/Project%20Overview%20(2).pdf)
+📄 [عرض ملف المشروع PDF](Project Overview (2).pdf/.)
